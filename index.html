@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradasi Background dan Generator</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.5s;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .generator {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .output {
+            margin-top: 10px;
+        }
+        .output textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerakkan kursor untuk mengubah background</h1>
+    <div class="generator">
+        <div>
+            <label for="nameLength">Panjang Nama: </label>
+            <input type="number" id="nameLength" min="1" max="9" value="5">
+            <label for="nameCount">Jumlah Nama: </label>
+            <input type="number" id="nameCount" min="1" value="1">
+            <button onclick="generateNames()">Generate Names</button>
+        </div>
+        <div class="output">
+            <textarea id="namesOutput" readonly></textarea>
+        </div>
+        <div>
+            <label for="passwordLength">Panjang Password: </label>
+            <input type="number" id="passwordLength" min="1" value="8">
+            <label for="passwordCount">Jumlah Password: </label>
+            <input type="number" id="passwordCount" min="1" value="1">
+            <button onclick="generatePasswords()">Generate Passwords</button>
+        </div>
+        <div class="output">
+            <textarea id="passwordsOutput" readonly></textarea>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('mousemove', function(event) {
+            const x = event.clientX / window.innerWidth;
+            const y = event.clientY / window.innerHeight;
+            const red = Math.round(x * 255);
+            const green = Math.round(y * 255);
+            const blue = Math.round((1 - x) * 255);
+            document.body.style.background = `linear-gradient(45deg, rgb(${red}, ${green}, ${blue}), #fad0c4, #fbc2eb, #a18cd1, rgb(${red}, ${green}, ${blue}))`;
+        });
+
+        function generateNames() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+            const nameLength = parseInt(document.getElementById('nameLength').value);
+            const nameCount = parseInt(document.getElementById('nameCount').value);
+            let names = '';
+            for (let j = 0; j < nameCount; j++) {
+                let name = '';
+                for (let i = 0; i < nameLength; i++) {
+                    name += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                names += name + '\n';
+            }
+            document.getElementById('namesOutput').value = names;
+        }
+
+        function generatePasswords() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
+            const symbols = '!*.@';
+            const passwordLength = parseInt(document.getElementById('passwordLength').value);
+            const passwordCount = parseInt(document.getElementById('passwordCount').value);
+            let passwords = '';
+            for (let j = 0; j < passwordCount; j++) {
+                let password = '';
+                for (let i = 0; i < passwordLength; i++) {
+                    password += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                password += symbols.charAt(Math.floor(Math.random() * symbols.length));
+                passwords += password + '\n';
+            }
+            document.getElementById('passwordsOutput').value = passwords;
+        }
+    </script>
+</body>
+</html>
